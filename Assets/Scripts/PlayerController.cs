@@ -10,8 +10,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 10;
     [SerializeField] private float jumpCheckRadius = 1.0f;
     [SerializeField] private Vector3 offset = new Vector3(0.0f, -0.5f, 0.0f);
+    [SerializeField] private GameObject GameOverScreen;
 
     Rigidbody rb;
+    private Health health;
+
+    private void Awake()
+    {
+        health = GetComponent<Health>();
+        health.OnDeath += Die;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,7 +37,7 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-        Debug.Log($"Moving {moveInput}");
+        //Debug.Log($"Moving {moveInput}");
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -54,5 +62,13 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position + offset, jumpCheckRadius);
+    }
+
+    void Die()
+    {
+        GameOverScreen.SetActive(true);
+
+        if (health != null)
+            health.OnDeath -= Die;
     }
 }
