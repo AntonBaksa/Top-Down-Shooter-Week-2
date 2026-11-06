@@ -5,7 +5,7 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private float maxHealth = 100;
     [SerializeField] private string otherTag = "";
-    [SerializeField] private float damage = 10;
+    [SerializeField] private float damage = 20;
 
     private float currentHealth = 100;
 
@@ -15,12 +15,6 @@ public class Health : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void OnCollisionEnter(Collision other)

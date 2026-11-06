@@ -7,17 +7,20 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float speed = 3;
 
     private Health health;
+    private Rigidbody rb;
 
     private void Awake()
     {
+        rb = GetComponent<Rigidbody>();
         health = GetComponent<Health>();
         health.OnDeath += Die;
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        rb.sleepThreshold = 0.0f;
     }
 
     // Update is called once per frame

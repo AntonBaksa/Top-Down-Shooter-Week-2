@@ -30,8 +30,24 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(new Vector3(moveInput.x, 0, moveInput.y) * Time.deltaTime * speed);
+        transform.position += new Vector3(moveInput.x, 0, moveInput.y) * Time.deltaTime * speed;
 
+        Vector3 mousePos = Mouse.current.position.ReadValue();
+
+        Ray mouseRay = Camera.main.ScreenPointToRay(mousePos);
+
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+
+        float hitDistaance;
+        if(groundPlane.Raycast(mouseRay, out hitDistaance))
+        {
+            Vector3 hitPos = mouseRay.GetPoint(hitDistaance);
+
+            Vector3 lookDirection = hitPos - transform.position;
+            lookDirection.y = 0.0f;
+
+            transform.rotation = Quaternion.LookRotation(lookDirection);
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -70,5 +86,6 @@ public class PlayerController : MonoBehaviour
 
         if (health != null)
             health.OnDeath -= Die;
+        Time.timeScale = 0;
     }
 }
